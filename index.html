@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Calculator</title>
+    <!-- Bootstrap CDN for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('image/WhatsApp\ Image\ 2024-10-18\ at\ 12.36.44_ba41d99d.jpg');
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #4CAF50;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .login-link a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        #result {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 10px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-leaf"></i> Carbon Footprint Calculator</h1>
+        <form id="carbonForm">
+            <div class="mb-3">
+                <label for="familyMembers" class="form-label">Number of Family Members:</label>
+                <input type="number" class="form-control" id="familyMembers" name="familyMembers" placeholder="Enter number of family members" min="1">
+            </div>
+            <div class="mb-3">
+                <label for="carFuel" class="form-label">Car Fuel Type:</label>
+                <select id="carFuel" class="form-select">
+                    <option value="petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="electric">Electric</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="carNumber" class="form-label">Number of Cars Owned:</label>
+                <input type="number" class="form-control" id="carNumber" name="carNumber" placeholder="Enter number of cars" min="0">
+            </div>
+            <div class="mb-3">
+                <label for="acCapacity" class="form-label">Capacity of AC (in tons):</label>
+                <input type="number" class="form-control" id="acCapacity" name="acCapacity" placeholder="Enter AC capacity" min="1">
+            </div>
+            <div class="mb-3">
+                <label for="gasCylinder" class="form-label">Daily Use of Gas Cylinder (in hours):</label>
+                <input type="number" class="form-control" id="gasCylinder" name="gasCylinder" placeholder="Enter hours of usage" min="0">
+            </div>
+            <button type="button" class="btn btn-primary w-100" onclick="calculateFootprint()">Calculate</button>
+        </form>
+
+        <h2>Your Carbon Footprint:</h2>
+        <p id="result">--</p>
+
+        <div class="login-link">
+            <p><a href="login.html">Login to save your data <i class="fas fa-user"></i></a></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateFootprint() {
+            const familyMembers = document.getElementById('familyMembers').value;
+            const carFuel = document.getElementById('carFuel').value.toLowerCase();
+            const carNumber = document.getElementById('carNumber').value;
+            const acCapacity = document.getElementById('acCapacity').value;
+            const gasCylinder = document.getElementById('gasCylinder').value;
+
+            let carEmissionFactor;
+            switch(carFuel) {
+                case 'petrol': carEmissionFactor = 2.31; break;
+                case 'diesel': carEmissionFactor = 2.68; break;
+                case 'electric': carEmissionFactor = 0.4; break;
+                default: carEmissionFactor = 0;
+            }
+
+            const carFootprint = carNumber * carEmissionFactor * 1000;
+            const acFootprint = acCapacity * 1.5 * 365;
+            const gasFootprint = gasCylinder * 2.98 * 365;
+            const totalFootprint = (familyMembers * 10) + carFootprint + acFootprint + gasFootprint;
+
+            document.getElementById('result').textContent = totalFootprint.toFixed(2) + ' kg CO2 per year';
+            window.location.href = 'suggestions.html?footprint=' + totalFootprint;
+        }
+    </script>
+</body>
+</html>
